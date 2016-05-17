@@ -109,5 +109,4 @@ def metsxml2py(mets_filename, loose=False):
             if loose:
                 continue
             else:
-                raise PymetsException, "Element \"%s\" not found in mets dispatch." \
-                    % (element.tag)
+                raise PymetsException("Element \"%s\" not found in mets dispatch." % (element.tag))
