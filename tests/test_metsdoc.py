@@ -1,13 +1,10 @@
 import unittest
 import StringIO
 
-
 from pymets import metsdoc
 
 
-
 class METSDocTests(unittest.TestCase):
-
 
     def test_invalid_mets_element(self):
 

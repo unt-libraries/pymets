@@ -67,7 +67,8 @@ class MetsBase(object):
                     # Call the dispatcher to peform actions based on the keyword arguments.
                     initial_dispatch[key](val)
                 else:
-                    raise MetsStructureException, "Argument %s not valid" % (key)
+                    raise MetsStructureException(
+                        "Argument %s not valid" % (key))
 
     def set_atts(self, attribute_dict):
         """
@@ -77,10 +78,11 @@ class MetsBase(object):
             if name in self.atts.keys():
                 self.atts[name] = value
             else:
-                raise MetsStructureException, "Attribute %s is not legal in this element!" % (name,)
+                raise MetsStructureException(
+                    "Attribute %s is not legal in this element!" % (name,))
         # Remove empty attributes
         for key, value in self.atts.items():
-            if value == None:
+            if value is None:
                 del self.atts[key]
 
     def set_att(self, attName, attVal):
@@ -102,15 +104,17 @@ class MetsBase(object):
     def add_child(self, child):
         """This adds a child object to the current one.  It will check the
         contained_children list to make sure that the object is allowable, and
-        throw an exception if not"""
+        throw an exception if not."""
         if child.tag in self.contained_children:
             self.children.append(child)
         else:
-            raise MetsStructureException, "Invalid child type %s for parent %s" % (child.getTag(), self.tag)
+            raise MetsStructureException(
+                "Invalid child type %s for parent %s." % (child.tag, self.tag)
+            )
 
     def remove_child(self, child):
         """
-        Remove a given child element from the children list
+        Remove a given child element from the children list.
         """
         newChildren = []
         for originalChild in self.children:
@@ -121,7 +125,7 @@ class MetsBase(object):
 
     def get_children(self, tag):
         """
-        Given a tag name, return a list of child objects that match the tag
+        Given a tag name, return a list of child objects that match the tag.
         """
         childList = []
         for child in self.children:
@@ -132,11 +136,13 @@ class MetsBase(object):
     def set_content(self, content):
         """This sets textual content for the object/node.  It checks to make
         sure that the node is allowed to contain content and throws an
-        exception if not"""
+        exception if not."""
         if self.allows_content:
             self.content = content
         else:
-            raise MetsStructureException, "Element %s does not allow textual content" % (self.tag,)
+            raise MetsStructureException(
+                "Element %s does not allow textual content." % self.tag
+            )
 
 
 class Mets(MetsBase):
@@ -155,8 +161,10 @@ class Mets(MetsBase):
             f.write(self.create_xml_string(nsmap).encode("utf-8"))
             f.close()
         except Exception, e:
-            raise MetsStructureException, "Failed to create METS file. Filename: %s, %s" \
-                % (mets_filename, str(e))
+            raise MetsStructureException(
+                "Failed to create METS file. Filename: %s, %s" %
+                (mets_filename, str(e))
+            )
 
     def create_xml_string(self, nsmap=None):
         """Converts a mets elements list (list of MetsBase objects)
