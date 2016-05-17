@@ -1,18 +1,19 @@
-#Requires installation of python-lxml
 from lxml.etree import iterparse
 from pymets import mets_structure
 
+
 class PymetsException(Exception):
-    """Base exception for pymets"""
+    """Base exception for pymets."""
+
     def __init__(self, value):
         self.value = value
-    
+
     def __str__(self):
         return "%s" % (self.value,)
 
 """
     How to use pymets:
-    Create a mets object (attributes are required to match what's in each elements self.atts)
+    Create a METS object (attributes are required to match what's in each elements self.atts)
     from pymets.metsdoc import PYMETS_DISPATCH
     mets_root_element = PYMETS_DISPATCH['mets'](attributes=attributes)
     mets_fileSec_element = PYMETS_DISPATCH['fileSec'](attributes=attributes, content=content)
@@ -51,62 +52,63 @@ PYMETS_DISPATCH = {
     'mechanism': mets_structure.Mechanism,
     }
 
+
 def metsxml2py(mets_filename, loose=False):
-    """Takes a mets xml filename and parses it into a python object
-       You can also pass this a string as input like so:
+    """Take a METS XML filename and parse it into a Python object.
+
+    You can also pass this a string as input like so:
        import StringIO
        metsxml2py(StringIO.StringIO(mets_string))
     """
-    #Create a stack to hold parents
+    # Create a stack to hold parents.
     parent_stack = []
-    #Use the memory efficient iterparse to open the file and loop through elements
+    # Use the memory efficient iterparse to open the file and loop through elements.
     for event, element in iterparse(mets_filename, events=("start", "end")):
-        #If the element exists in mets
+        # If the element exists in mets
         if element.tag in PYMETS_DISPATCH:
-            #If it is the opening tag of the element
+            # If it is the opening tag of the element
             if event == 'start':
-                if element.text != None:
+                if element.text is not None:
                     content = element.text.strip()
                 else:
                     content = ''
-                #if the element has attributes and content
+                # If the element has attributes and content.
                 if len(element.attrib) > 0 and content != '':
-                    #Add the element to the parent stack
+                    # Add the element to the parent stack.
                     parent_stack.append(
                         PYMETS_DISPATCH[element.tag](
-                            attributes = element.attrib,
-                            content = element.text,
+                            attributes=element.attrib,
+                            content=element.text,
                             )
                         )
-                #if the element has attributes
+                # If the element has attributes.
                 elif len(element.attrib) > 0:
-                    #Add the element to the parent stack
+                    # Add the element to the parent stack.
                     parent_stack.append(
-                        PYMETS_DISPATCH[element.tag](attributes = element.attrib)
+                        PYMETS_DISPATCH[element.tag](attributes=element.attrib)
                         )
-                #if the element has content
+                # If the element has content.
                 elif content != '':
-                    #Add the element to the parent stack
+                    # Add the element to the parent stack.
                     parent_stack.append(
-                        PYMETS_DISPATCH[element.tag](content = element.text)
+                        PYMETS_DISPATCH[element.tag](content=element.text)
                         )
-                #if the element has no content or attributes
+                # If the element has no content or attributes.
                 else:
-                    #Add the element to the parent stack
+                    # Add the element to the parent stack.
                     parent_stack.append(PYMETS_DISPATCH[element.tag]())
-            #if it is the closing tag of the element
+            # If it is the closing tag of the element.
             elif event == 'end':
-                #Take the element off the parent stack and append it to its own parent
+                # Take the element off the parent stack and append it to its own parent.
                 child = parent_stack.pop()
                 if len(parent_stack) > 0:
                     parent_stack[-1].add_child(child)
-                #if it doesn't have a parent, it must be the root element
+                # If it doesn't have a parent, it must be the root element.
                 else:
-                    #Return the root element
+                    # Return the root element.
                     return child
         else:
             if loose:
                 continue
             else:
-                raise PymetsException, "Element \"%s\" not found in mets dispatch." \
-                    % (element.tag)
+                raise PymetsException("Element \"%s\" not found in mets dispatch." % (element.tag))
