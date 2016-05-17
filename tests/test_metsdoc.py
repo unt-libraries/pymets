@@ -7,7 +7,6 @@ from pymets import metsdoc
 class METSDocTests(unittest.TestCase):
 
     def test_invalid_mets_element(self):
-
         mets_string = """<?xml version="1.0" encoding="UTF-8"?>
         <mets><metsHDR/></mets>"""
 

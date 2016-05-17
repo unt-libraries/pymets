@@ -6,7 +6,6 @@ from pymets import mets_structure
 class METSStructureTests(unittest.TestCase):
 
     def test_invalid_kwarg(self):
-
         with self.assertRaises(mets_structure.MetsStructureException) as cm:
             mets_structure.MetsBase(**{'invalid_kwarg': 'invalid_value'})
 
@@ -14,7 +13,6 @@ class METSStructureTests(unittest.TestCase):
         self.assertEqual(str(cm.exception), expected_error)
 
     def test_invalid_attribute(self):
-
         attributes = {
             'TYPE': 'archival information package',
             'OBJID': 'ark:/67531/TEST',
@@ -29,7 +27,6 @@ class METSStructureTests(unittest.TestCase):
         self.assertEqual(str(cm.exception), expected_error)
 
     def test_invalid_child(self):
-
         with self.assertRaises(mets_structure.MetsStructureException) as cm:
             m = mets_structure.Mets()
             m.add_child(mets_structure.File())
@@ -38,7 +35,6 @@ class METSStructureTests(unittest.TestCase):
         self.assertEqual(str(cm.exception), expected_error)
 
     def test_does_not_all_textual_content(self):
-
         with self.assertRaises(mets_structure.MetsStructureException) as cm:
             m = mets_structure.Mets()
             m.set_content('Texas')
@@ -47,7 +43,6 @@ class METSStructureTests(unittest.TestCase):
         self.assertEqual(str(cm.exception), expected_error)
 
     def test_set_empty_attribute(self):
-
         attributes = {
             'TYPE': None,
             'OBJID': None,
