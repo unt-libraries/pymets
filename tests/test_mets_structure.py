@@ -34,7 +34,7 @@ class METSStructureTests(unittest.TestCase):
         expected_error = 'Invalid child type file for parent mets.'
         self.assertEqual(str(cm.exception), expected_error)
 
-    def test_does_not_all_textual_content(self):
+    def test_does_not_allow_textual_content(self):
         with self.assertRaises(mets_structure.MetsStructureException) as cm:
             m = mets_structure.Mets()
             m.set_content('Texas')

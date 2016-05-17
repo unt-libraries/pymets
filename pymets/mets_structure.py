@@ -3,7 +3,8 @@ from pymets import XLINK, XSI, NSMAP
 
 
 class MetsStructureException(Exception):
-    """Base exception for the mets python structure"""
+    """Base exception for the METS Python structure."""
+
     def __init__(self, value):
         self.value = value
 
@@ -12,7 +13,7 @@ class MetsStructureException(Exception):
 
 
 def create_mets_xml_subelement(parent, element):
-    """ Create mets sub elements """
+    """Create METS sub elements."""
     sub_element = SubElement(parent, element.tag)
     for attribute, value in element.atts.items():
         if not value:
@@ -31,12 +32,10 @@ def create_mets_xml_subelement(parent, element):
 
 
 class MetsBase(object):
-    """This is our base object that all of the mets element wrappers will
-        inherit.
-    """
+    """Base object from which all METS element wrappers will inherit."""
 
     def __init__(self, **kwargs):
-        # Set up the dispatcher to peform operations on keyword arguments
+        # Set up the dispatcher to peform operations on keyword arguments.
         initial_dispatch = {
             'attributes': self.set_atts,
             'content': self.set_content,
@@ -51,7 +50,7 @@ class MetsBase(object):
         # By default, objects don't have textual content.
         self.allows_content = getattr(self, 'allows_content', False)
 
-        # Attributes of this particular element
+        # Attributes of this particular element.
         self.atts = getattr(self, 'atts', {})
 
         # Textual content, if any.
@@ -71,40 +70,35 @@ class MetsBase(object):
                         "Argument %s not valid" % (key))
 
     def set_atts(self, attribute_dict):
-        """
-        Sets the attributes.
-        """
+        """Set the attributes."""
         for name, value in attribute_dict.items():
             if name in self.atts.keys():
                 self.atts[name] = value
             else:
                 raise MetsStructureException(
                     "Attribute %s is not legal in this element!" % (name,))
-        # Remove empty attributes
+        # Remove empty attributes.
         for key, value in self.atts.items():
             if value is None:
                 del self.atts[key]
 
     def set_att(self, attName, attVal):
-        """
-        Sets a single attribute.
-        """
-        # We need a way to check for validity here
+        """Set a single attribute."""
+        # We need a way to check for validity here.
         self.atts[attName] = attVal
 
     def get_att(self, attName):
-        """
-        Get a single attribute, or None if it does not exist.
-        """
+        """Get a single attribute, or None if it does not exist."""
         if attName in self.atts:
             return self.atts[attName]
 
         return None
 
     def add_child(self, child):
-        """This adds a child object to the current one.  It will check the
+        """Add a child object to the current one.  It will check the
         contained_children list to make sure that the object is allowable, and
-        throw an exception if not."""
+        throw an exception if not.
+        """
         if child.tag in self.contained_children:
             self.children.append(child)
         else:
@@ -113,9 +107,7 @@ class MetsBase(object):
             )
 
     def remove_child(self, child):
-        """
-        Remove a given child element from the children list.
-        """
+        """Remove a given child element from the children list."""
         newChildren = []
         for originalChild in self.children:
             if originalChild != child:
@@ -124,8 +116,8 @@ class MetsBase(object):
         self.children = newChildren
 
     def get_children(self, tag):
-        """
-        Given a tag name, return a list of child objects that match the tag.
+        """Given a tag name, return a list of child objects that
+        match the tag.
         """
         childList = []
         for child in self.children:
@@ -134,9 +126,10 @@ class MetsBase(object):
         return childList
 
     def set_content(self, content):
-        """This sets textual content for the object/node.  It checks to make
+        """Set textual content for the object/node.  It checks to make
         sure that the node is allowed to contain content and throws an
-        exception if not."""
+        exception if not.
+        """
         if self.allows_content:
             self.content = content
         else:
@@ -146,7 +139,7 @@ class MetsBase(object):
 
 
 class Mets(MetsBase):
-    """wrapper for top level mets element"""
+    """Wrapper for top level METS element."""
     tag = "mets"
     contained_children = ["metsHdr", "dmdSec", "amdSec", "fileSec", "structMap", "behaviorSec"]
 
@@ -155,7 +148,7 @@ class Mets(MetsBase):
         super(Mets, self).__init__(**kwargs)
 
     def create_xml_file(self, mets_filename, nsmap=None):
-        """Take a filename and a mets python object and creates a mets file."""
+        """Take a filename and a METS Python object, and create a METS file."""
         try:
             f = open(mets_filename, 'w')
             f.write(self.create_xml_string(nsmap).encode("utf-8"))
@@ -167,9 +160,9 @@ class Mets(MetsBase):
             )
 
     def create_xml_string(self, nsmap=None):
-        """Converts a mets elements list (list of MetsBase objects)
+        """Convert a METS elements list (list of MetsBase objects).
 
-        Returns a mets xml document in a string which you can output into a
+        Returns a METS XML document in a string which you can output into a
         file:
             mets_string = mets2xml(mets_root_element)
         """
@@ -178,17 +171,17 @@ class Mets(MetsBase):
         root = Element(self.tag, nsmap=nsmap)
         for attribute, value in self.atts.items():
             root.set(attribute, str(value))
-        # Create an xml structure from field list.
+        # Create an XML structure from field list.
         for element in self.children:
             create_mets_xml_subelement(root, element)
 
-        xml = '<?xml version="1.0" encoding="UTF-8"?>\n'+tostring(root, pretty_print=True)
+        xml = '<?xml version="1.0" encoding="UTF-8"?>\n' + tostring(root, pretty_print=True)
 
         return xml
 
 
 class MetsHdr(MetsBase):
-    """wrapper for metsHdr element"""
+    """Wrapper for metsHdr element."""
     tag = "metsHdr"
     contained_children = ["agent",  "altRecordID"]
 
@@ -312,10 +305,9 @@ class XMLData(MetsBase):
         super(XMLData, self).__init__(**kwargs)
 
     def add_child(self, child):
-        """
-        Since this element is supposed to accomodate an arbitrary set of data,
-        the add_child function is significantly less picky than the parent
-        version
+        """Since this element is supposed to accommodate an arbitrary
+        set of data, the add_child function is significantly less picky
+        than the parent version.
         """
         self.children.append(child)
 

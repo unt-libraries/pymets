@@ -3,7 +3,8 @@ from pymets import mets_structure
 
 
 class PymetsException(Exception):
-    """Base exception for pymets"""
+    """Base exception for pymets."""
+
     def __init__(self, value):
         self.value = value
 
@@ -12,7 +13,7 @@ class PymetsException(Exception):
 
 """
     How to use pymets:
-    Create a mets object (attributes are required to match what's in each elements self.atts)
+    Create a METS object (attributes are required to match what's in each elements self.atts)
     from pymets.metsdoc import PYMETS_DISPATCH
     mets_root_element = PYMETS_DISPATCH['mets'](attributes=attributes)
     mets_fileSec_element = PYMETS_DISPATCH['fileSec'](attributes=attributes, content=content)
@@ -53,14 +54,15 @@ PYMETS_DISPATCH = {
 
 
 def metsxml2py(mets_filename, loose=False):
-    """Takes a mets xml filename and parses it into a python object
-       You can also pass this a string as input like so:
+    """Take a METS XML filename and parse it into a Python object.
+
+    You can also pass this a string as input like so:
        import StringIO
        metsxml2py(StringIO.StringIO(mets_string))
     """
-    # Create a stack to hold parents
+    # Create a stack to hold parents.
     parent_stack = []
-    # Use the memory efficient iterparse to open the file and loop through elements
+    # Use the memory efficient iterparse to open the file and loop through elements.
     for event, element in iterparse(mets_filename, events=("start", "end")):
         # If the element exists in mets
         if element.tag in PYMETS_DISPATCH:
