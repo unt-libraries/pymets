@@ -11,6 +11,7 @@ class PymetsException(Exception):
     def __str__(self):
         return "%s" % (self.value,)
 
+
 """
     How to use pymets:
     Create a METS object (attributes are required to match what's in each elements self.atts)
