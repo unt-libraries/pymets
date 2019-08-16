@@ -11,7 +11,6 @@ setup(
     url='https://github.com/unt-libraries/pymets',
     license='BSD',
     packages=['pymets'],
-    test_suite='runtests',
     install_requires=[
         'lxml>=3.4.4',
     ],
