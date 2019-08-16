@@ -150,8 +150,8 @@ class Mets(MetsBase):
     def create_xml_file(self, mets_filename, nsmap=None):
         """Take a filename and a METS Python object, and create a METS file."""
         try:
-            f = open(mets_filename, 'w')
-            f.write(self.create_xml_string(nsmap).encode("utf-8"))
+            f = open(mets_filename, 'wb')
+            f.write(self.create_xml_string(nsmap))
             f.close()
         except Exception as e:
             raise MetsStructureException(
@@ -175,9 +175,12 @@ class Mets(MetsBase):
         for element in self.children:
             create_mets_xml_subelement(root, element)
 
-        xml = '<?xml version="1.0" encoding="UTF-8"?>\n' + tostring(root, pretty_print=True)
-
-        return xml
+        return b'<?xml version="1.0" encoding="UTF-8"?>\n' + tostring(
+            root,
+            encoding='UTF-8',
+            xml_declaration=False,
+            pretty_print=True
+        )
 
 
 class MetsHdr(MetsBase):
