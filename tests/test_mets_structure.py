@@ -53,12 +53,33 @@ class METSStructureTests(unittest.TestCase):
 
         self.assertEqual(m.atts, {})
 
+    def test_METS_create_xml_string(self):
+        """Test our METS xml is written as expected string."""
+        attributes = {
+            'OBJID': 'ark:/67531/12345',
+        }
+
+        m = mets_structure.Mets()
+        m.set_atts(attributes)
+        m.add_child(mets_structure.MetsHdr())
+
+        expected_text = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+                         '<mets xmlns:mets="http://www.loc.gov/METS/"'
+                         ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
+                         ' xmlns:xlink="http://www.w3.org/1999/xlink"'
+                         ' xmlns:dc="http://purl.org/dc/elements/1.1/"'
+                         ' OBJID="ark:/67531/12345">\n'
+                         '  <metsHdr/>\n'
+                         '</mets>\n')
+        self.assertEqual(m.create_xml_string(), expected_text.encode())
+
 
 def suite():
     all_tests = unittest.TestSuite()
     all_tests.addTest(unittest.makeSuite(METSStructureTests))
 
     return all_tests
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -11,6 +11,7 @@ class PymetsException(Exception):
     def __str__(self):
         return "%s" % (self.value,)
 
+
 """
     How to use pymets:
     Create a METS object (attributes are required to match what's in each elements self.atts)
@@ -57,8 +58,8 @@ def metsxml2py(mets_filename, loose=False):
     """Take a METS XML filename and parse it into a Python object.
 
     You can also pass this a string as input like so:
-       import StringIO
-       metsxml2py(StringIO.StringIO(mets_string))
+       import io
+       metsxml2py(io.BytesIO(mets_string.encode('utf-8'))
     """
     # Create a stack to hold parents.
     parent_stack = []

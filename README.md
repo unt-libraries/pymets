@@ -1,4 +1,4 @@
-pymets
+pymets [![Build Status](https://travis-ci.org/unt-libraries/pymets.svg?branch=master)](https://travis-ci.org/unt-libraries/pymets)
 =========
 
 Python module for reading and writing METS files.
