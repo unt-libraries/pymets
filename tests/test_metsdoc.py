@@ -7,11 +7,11 @@ from pymets import metsdoc
 class METSDocTests(unittest.TestCase):
 
     def test_invalid_mets_element(self):
-        mets_string = """<?xml version="1.0" encoding="UTF-8"?>
+        mets_string = b"""<?xml version="1.0" encoding="UTF-8"?>
         <mets><metsHDR/></mets>"""
 
         with self.assertRaises(metsdoc.PymetsException) as cm:
-            metsdoc.metsxml2py(io.BytesIO(mets_string.encode('utf-8')))
+            metsdoc.metsxml2py(io.BytesIO(mets_string))
 
         expected_error = 'Element "metsHDR" not found in mets dispatch.'
         self.assertEqual(str(cm.exception), expected_error)
