@@ -4,15 +4,33 @@ pymets [![Build Status](https://travis-ci.org/unt-libraries/pymets.svg?branch=ma
 Python module for reading and writing METS files.
 
 ```python
->>> from pymets.metsdoc import PYMETS_DISPATCH
+>>> import io
+>>> from pymets import mets_structure, metsdoc
+>>> # To create a METS object
 >>> attributes = {
             'TYPE': 'archival information package',
-            'OBJID': 'ark:/67531/TEST'}
->>> mets_root_element = PYMETS_DISPATCH['mets'](attributes=attributes)
->>> mets_fileSec_element = PYMETS_DISPATCH['fileSec']
->>> mets_root_element.add_child(mets_fileSec_element)
->>> print(mets_root_element.atts)
-{'TYPE': 'archival information package', 'OBJID': 'ark:/67531/TEST'}
+            'OBJID': 'ark:/67531/12345',
+        }
+>>> m = mets_structure.Mets()
+>>> m.set_atts(attributes)
+>>> m.add_child(mets_structure.MetsHdr())
+>>> print(m.create_xml_string())
+>>> <?xml version="1.0" encoding="UTF-8"?>
+<mets xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:mets="http://www.loc.gov/METS/" 
+xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+TYPE="archival information package" OBJID="ark:/67531/12345">
+  <metsHdr/>
+</mets>
+
+>>> # To convert mets xml to python object 
+>>> mets_string = """<?xml version="1.0" encoding="UTF-8"?> 
+>>>     <mets><metsHdr CREATEDATE="2012-07-17T22:24:35Z" LASTMODDATE="2012-07-17T22:24:35Z" ID="hdr_00001">
+>>>         <agent TYPE="ORGANIZATION" ROLE="CREATOR">
+>>>         <name>UNT Libraries: Digital Projects Unit</name>
+>>>         </agent>
+>>>         </metsHdr>
+>>>     </mets>"""
+>>> res = metsdoc.metsxml2py(io.BytesIO(mets_string.encode('utf-8')))
 ```
 
 Requirements
