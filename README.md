@@ -24,12 +24,12 @@ TYPE="archival information package" OBJID="ark:/67531/12345">
 
 >>> # To convert mets xml to python object 
 >>> mets_string = """<?xml version="1.0" encoding="UTF-8"?> 
->>>     <mets><metsHdr CREATEDATE="2012-07-17T22:24:35Z" LASTMODDATE="2012-07-17T22:24:35Z" ID="hdr_00001">
->>>         <agent TYPE="ORGANIZATION" ROLE="CREATOR">
->>>         <name>UNT Libraries: Digital Projects Unit</name>
->>>         </agent>
->>>         </metsHdr>
->>>     </mets>"""
+<mets><metsHdr CREATEDATE="2012-07-17T22:24:35Z" LASTMODDATE="2012-07-17T22:24:35Z" ID="hdr_00001">
+    <agent TYPE="ORGANIZATION" ROLE="CREATOR">
+        <name>UNT Libraries: Digital Projects Unit</name>
+    </agent>
+  </metsHdr>
+</mets>"""
 >>> res = metsdoc.metsxml2py(io.BytesIO(mets_string.encode('utf-8')))
 ```
 
