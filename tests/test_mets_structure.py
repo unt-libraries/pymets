@@ -63,15 +63,15 @@ class METSStructureTests(unittest.TestCase):
         m.set_atts(attributes)
         m.add_child(mets_structure.MetsHdr())
 
-        expected_text = ('<?xml version="1.0" encoding="UTF-8"?>\n'
-                         '<mets xmlns:mets="http://www.loc.gov/METS/"'
-                         ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
-                         ' xmlns:xlink="http://www.w3.org/1999/xlink"'
-                         ' xmlns:dc="http://purl.org/dc/elements/1.1/"'
-                         ' OBJID="ark:/67531/12345">\n'
-                         '  <metsHdr/>\n'
-                         '</mets>\n')
-        self.assertEqual(m.create_xml_string(), expected_text.encode())
+        expected_text = (b'<?xml version="1.0" encoding="UTF-8"?>\n'
+                         b'<mets xmlns:mets="http://www.loc.gov/METS/"'
+                         b' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
+                         b' xmlns:xlink="http://www.w3.org/1999/xlink"'
+                         b' xmlns:dc="http://purl.org/dc/elements/1.1/"'
+                         b' OBJID="ark:/67531/12345">\n'
+                         b'  <metsHdr/>\n'
+                         b'</mets>\n')
+        self.assertEqual(m.create_xml_string(), expected_text)
 
 
 def suite():
