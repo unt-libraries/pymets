@@ -18,7 +18,7 @@ def create_mets_xml_subelement(parent, element):
     for attribute, value in element.atts.items():
         if not value:
             continue
-        if not isinstance(value, str) and not isinstance(value, unicode):
+        if not isinstance(value, str):
             sub_element.set(attribute, str(value))
         else:
             sub_element.set(attribute, value)
@@ -78,7 +78,7 @@ class MetsBase(object):
                 raise MetsStructureException(
                     "Attribute %s is not legal in this element!" % (name,))
         # Remove empty attributes.
-        for key, value in self.atts.items():
+        for key, value in list(self.atts.items()):
             if value is None:
                 del self.atts[key]
 
@@ -150,10 +150,10 @@ class Mets(MetsBase):
     def create_xml_file(self, mets_filename, nsmap=None):
         """Take a filename and a METS Python object, and create a METS file."""
         try:
-            f = open(mets_filename, 'w')
-            f.write(self.create_xml_string(nsmap).encode("utf-8"))
+            f = open(mets_filename, 'wb')
+            f.write(self.create_xml_string(nsmap))
             f.close()
-        except Exception, e:
+        except Exception as e:
             raise MetsStructureException(
                 "Failed to create METS file. Filename: %s, %s" %
                 (mets_filename, str(e))
@@ -175,9 +175,12 @@ class Mets(MetsBase):
         for element in self.children:
             create_mets_xml_subelement(root, element)
 
-        xml = '<?xml version="1.0" encoding="UTF-8"?>\n' + tostring(root, pretty_print=True)
-
-        return xml
+        return b'<?xml version="1.0" encoding="UTF-8"?>\n' + tostring(
+            root,
+            encoding='UTF-8',
+            xml_declaration=False,
+            pretty_print=True
+        )
 
 
 class MetsHdr(MetsBase):

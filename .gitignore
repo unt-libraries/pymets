@@ -1,5 +1,9 @@
 *.pyc
-*.egg-info
+*.egg
+*.swp
+*.swo
+.tox/
 
-build/
+pymets.egg-info
 dist/
+build/
