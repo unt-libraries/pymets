@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='pymets',
-    version='1.0.0',
+    version='2.0.0',
     description='Python module for reading and writing METS files.',
     author='University of North Texas Libraries',
     author_email='mark.phillips@unt.edu',
