@@ -67,7 +67,6 @@ class METSStructureTests(unittest.TestCase):
                          b'<mets xmlns:mets="http://www.loc.gov/METS/"'
                          b' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
                          b' xmlns:xlink="http://www.w3.org/1999/xlink"'
-                         b' xmlns:dc="http://purl.org/dc/elements/1.1/"'
                          b' OBJID="ark:/67531/12345">\n'
                          b'  <metsHdr/>\n'
                          b'</mets>\n')
