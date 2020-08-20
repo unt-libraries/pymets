@@ -61,14 +61,21 @@ class METSStructureTests(unittest.TestCase):
 
         m = mets_structure.Mets()
         m.set_atts(attributes)
-        m.add_child(mets_structure.MetsHdr())
+        hdr = mets_structure.MetsHdr()
+        doc_id = mets_structure.MetsDocumentID(content='12345.aip.2018-05-07T23:29:05Z',
+                                               attributes={'TYPE': 'AIP-Version-Identifier'})
+        hdr.add_child(doc_id)
+        m.add_child(hdr)
 
         expected_text = (b'<?xml version="1.0" encoding="UTF-8"?>\n'
                          b'<mets xmlns:mets="http://www.loc.gov/METS/"'
                          b' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
                          b' xmlns:xlink="http://www.w3.org/1999/xlink"'
                          b' OBJID="ark:/67531/12345">\n'
-                         b'  <metsHdr/>\n'
+                         b'  <metsHdr>\n'
+                         b'    <metsDocumentID TYPE="AIP-Version-Identifier">'
+                         b'12345.aip.2018-05-07T23:29:05Z</metsDocumentID>\n'
+                         b'  </metsHdr>\n'
                          b'</mets>\n')
         self.assertEqual(m.create_xml_string(), expected_text)
 

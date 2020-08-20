@@ -186,7 +186,7 @@ class Mets(MetsBase):
 class MetsHdr(MetsBase):
     """Wrapper for metsHdr element."""
     tag = "metsHdr"
-    contained_children = ["agent",  "altRecordID"]
+    contained_children = ["agent",  "altRecordID", "metsDocumentID"]
 
     def __init__(self, **kwargs):
         self.atts = {
@@ -227,6 +227,15 @@ class AltRecordID(MetsBase):
     def __init__(self, **kwargs):
         self.atts = {"TYPE": None}
         super(AltRecordID, self).__init__(**kwargs)
+
+
+class MetsDocumentID(MetsBase):
+    tag = "metsDocumentID"
+    allows_content = True
+
+    def __init__(self, **kwargs):
+        self.atts = {"TYPE": None}
+        super(MetsDocumentID, self).__init__(**kwargs)
 
 
 class DmdSec(MetsBase):
