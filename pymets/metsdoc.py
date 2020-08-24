@@ -27,6 +27,7 @@ PYMETS_DISPATCH = {
     'name': mets_structure.Name,
     'note': mets_structure.Note,
     'altRecordID': mets_structure.AltRecordID,
+    'metsDocumentID': mets_structure.MetsDocumentID,
     'dmdSec': mets_structure.DmdSec,
     'mdRef': mets_structure.MdRef,
     'amdSec': mets_structure.AmdSec,
